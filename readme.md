@@ -35,4 +35,4 @@ You can fine-tune the following in the **Parameters** tab:
 - **Dwell Times**: Delays for mechanical pen movement.
 
 ---
-*Developed at NIT Agartala · 2024*
+*Developed at NIT Agartala · 2026*
