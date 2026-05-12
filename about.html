@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About — VoiceScribe</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── ABOUT PAGE ── */
+
+    /* Mentor section */
+    .mentor-wrap {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .mentor-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: var(--radius);
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mentor-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .mentor-caption {
+      font-size: 11px;
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .mentor-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      letter-spacing: -.02em;
+    }
+
+    .mentor-desg {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 2px;
+    }
+
+    .mentor-inst {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-bottom: 20px;
+    }
+
+    .mentor-bio {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.75;
+      margin-bottom: 20px;
+      max-width: 480px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Team grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .2s;
+    }
+
+    .member-card:hover {
+      border-color: var(--border-2);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .member-top {
+      background: var(--bg-2);
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .member-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+
+    .member-card:hover .member-img {
+      transform: scale(1.05);
+    }
+
+    .member-num {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .05em;
+    }
+
+    .member-body {
+      padding: 18px;
+    }
+
+    .member-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .member-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .member-roll {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      margin-bottom: 12px;
+    }
+
+    .member-desc {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .member-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    /* Thesis section */
+    .thesis-download-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 36px;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .tdh-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .tdh-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .tdh-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .tdh-meta {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    /* Chapter list */
+    .chapter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .chap-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chap-row:last-child {
+      border-bottom: none;
+    }
+
+    .chap-n {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      transition: all .25s;
+      margin-top: 2px;
+    }
+
+    .chap-row:hover .chap-n {
+      background: var(--text);
+      color: var(--accent-inv);
+      border-color: var(--text);
+    }
+
+    .chap-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .06em;
+      margin-bottom: 3px;
+    }
+
+    .chap-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .chap-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+
+    .chap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    /* Contribution bar table */
+    .contrib-table {
+      width: 100%;
+    }
+
+    .ct-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ct-row:last-child {
+      border-bottom: none;
+    }
+
+    .ct-name {
+      width: 130px;
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .ct-domain {
+      width: 110px;
+      flex-shrink: 0;
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .ct-bar-wrap {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      border-radius: 1px;
+    }
+
+    .ct-bar {
+      height: 100%;
+      background: var(--text);
+      border-radius: 1px;
+    }
+
+    .ct-pct {
+      width: 36px;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-3);
+    }
+
+    @media(max-width:700px) {
+      .mentor-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .mentor-avatar {
+        width: 100%;
+        height: 160px;
+      }
+
+      .thesis-download-hero {
+        padding: 24px 20px;
+      }
+    }
+
+    /* ── STEPS FLOW (Timeline) ── */
+    .steps-section {
+      padding: 80px 0;
+      background: var(--bg-1);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps-container {
+      max-width: 800px;
+      margin: 50px auto 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 30px;
+      position: relative;
+    }
+
+    .step-aside {
+      width: 160px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .step-chevron {
+      width: 100%;
+      background: var(--text);
+      color: var(--accent-inv);
+      padding: 15px 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-line {
+      width: 2px;
+      background: var(--border-2);
+      flex-grow: 1;
+      margin: 0;
+    }
+
+    .step-item:last-child .step-line {
+      display: none;
+    }
+
+    .step-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      flex-grow: 1;
+      transition: border-color .3s;
+    }
+
+    .step-item:hover .step-content {
+      border-color: var(--accent);
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    @media(max-width:600px) {
+      .step-item {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .step-aside {
+        width: 100%;
+      }
+      .step-chevron {
+        clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%);
+        min-height: 50px;
+      }
+      .step-line {
+        display: none;
+      }
+    }
+
+    /* ── HARDWARE SHOWCASE ── */
+    .hardware-section {
+      padding: 100px 0;
+      background: var(--bg);
+    }
+
+    .hardware-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 0;
+      margin-top: 40px;
+    }
+
+    .hw-img-wrap {
+      background: #fff; /* Light background for the white-background machine image */
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .hw-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .hw-info {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hw-spec-list {
+      list-style: none;
+      margin-top: 24px;
+    }
+
+    .hw-spec-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .hw-spec-label {
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .hw-spec-val {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    @media(max-width:850px) {
+      .hardware-card {
+        grid-template-columns: 1fr;
+      }
+      .hw-img-wrap {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg viewBox="0 0 14 14" fill="none">
+          <path d="M7 2a2 2 0 0 0-2 2v3a2 2 0 0 0 4 0V4a2 2 0 0 0-2-2Z" fill="currentColor"
+            style="fill:var(--accent-inv)" />
+          <path d="M4 7a3 3 0 0 0 6 0" stroke="var(--accent-inv)" stroke-width="1.2" fill="none" />
+          <line x1="7" y1="10" x2="7" y2="13" stroke="var(--accent-inv)" stroke-width="1.2" />
+          <line x1="5" y1="13" x2="9" y2="13" stroke="var(--accent-inv)" stroke-width="1.2" />
+        </svg>
+      </div>
+      <span class="nav-brand-name">VoiceScribe</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About Project</a></li>
+      <li><a href="control.html">Control Panel</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-pill" id="themePill">
+        <span class="theme-pill-dot">🌙</span>
+        <span class="theme-pill-label">Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- PAGE HEADER -->
+    <section class="section" style="padding-bottom:0;">
+      <div class="wrap-sm">
+        <p class="eyebrow">About the Project</p>
+        <h1 class="h-1" style="margin-bottom:12px;">Mentor, Team & Thesis</h1>
+        <p class="body-md">
+          VoiceScribe was developed as a Major Project at NIT Agartala, guided by Dr. Debashis Podder. Below you'll find
+          the full mentor profile, team member details, and the complete thesis document for download.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ MENTOR ═══ -->
+    <section class="section">
+      <div class="wrap-sm">
+        <p class="eyebrow">Project Guide</p>
+        <div class="mentor-wrap" data-sr>
+          <div class="mentor-avatar">
+            <img src="images/podder.png" alt="Dr. Debashis Podder" class="mentor-img">
+            <span class="mentor-caption" style="position:absolute; bottom:10px; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:4px;">Guide</span>
+          </div>
+          <div>
+            <div class="mono" style="margin-bottom:10px;">// Faculty Mentor</div>
+            <div class="mentor-name">Dr. Debashis Podder</div>
+            <div class="mentor-desg">Assistant Professor</div>
+            <div class="mentor-inst">Department of Production Engineering · NIT Agartala</div>
+            <p class="mentor-bio">
+              Dr. Debashis guided the VoiceScribe project from ideation to working prototype. His expertise spans CNC
+              machining, manufacturing systems design, and assistive technology. He shaped the project's core objective
+              — building an affordable, accessible solution for individuals who cannot hold a pen.
+            </p>
+            <div class="tag-row">
+              <span class="pill">CNC Machining</span>
+              <span class="pill">Manufacturing Systems</span>
+              <span class="pill">Assistive Technology</span>
+              <span class="pill">Production Engineering</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TEAM ═══ -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Team Members</p>
+        <h2 class="h-1">Who built VoiceScribe</h2>
+        <p class="body-md" style="margin-top:10px;">
+          Academic Session: 2025–2026 · Dept. of Production Engineering · NIT Agartala
+        </p>
+
+        <div class="team-grid">
+
+          <div class="member-card" data-sr data-sr-delay="0ms">
+            <div class="member-top">
+              <img src="images/saurabh.png" alt="Saurabh Prajapati" class="member-img">
+              <span class="member-num">01</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Software & AI</div>
+              <div class="member-name">Saurabh Prajapati</div>
+              <div class="member-roll">Roll: 22UPE099</div>
+              <div class="member-desc">Lead Developer. Web app architecture, G-code engine, Web Serial API, voice pipeline and reference management.</div>
+              <div class="member-tags">
+                <span class="pill">JavaScript</span>
+                <span class="pill">AI Pipeline</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="60ms">
+            <div class="member-top">
+              <img src="images/sandip.png" alt="Sandip Rajak" class="member-img">
+              <span class="member-num">02</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Mechanical Design</div>
+              <div class="member-name">Sandip Rajak</div>
+              <div class="member-roll">Roll: 22UPE061</div>
+              <div class="member-desc">Hardware assembly, frame calibration, and lead contributor to the project thesis document.</div>
+              <div class="member-tags">
+                <span class="pill">Assembly</span>
+                <span class="pill">Thesis</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="120ms">
+            <div class="member-top">
+              <img src="images/himanshu.png" alt="Himanshu Saurabh" class="member-img">
+              <span class="member-num">03</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Mechanical Design</div>
+              <div class="member-name">Himanshu Saurabh</div>
+              <div class="member-roll">Roll: 22UPE100</div>
+              <div class="member-desc">Frame assembly, linear motion calibration, and technical writing for the thesis document.</div>
+              <div class="member-tags">
+                <span class="pill">Assembly</span>
+                <span class="pill">Thesis</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="180ms">
+            <div class="member-top">
+              <img src="images/shaurya.png" alt="Kumar Shaurya" class="member-img">
+              <span class="member-num">04</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Logistics & Proc.</div>
+              <div class="member-name">Kumar Shaurya</div>
+              <div class="member-roll">Roll: 22UPE094</div>
+              <div class="member-desc">Component sourcing, Bill of Materials (BOM) management, and timely procurement of all project parts.</div>
+              <div class="member-tags">
+                <span class="pill">Sourcing</span>
+                <span class="pill">Logistics</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="240ms">
+            <div class="member-top">
+              <img src="images/narasimharao.png" alt="Vankudoth Narasimharao" class="member-img">
+              <span class="member-num">05</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Research & Docs</div>
+              <div class="member-name">Vankudoth Narasimharao</div>
+              <div class="member-roll">Roll: 22UPE092</div>
+              <div class="member-desc">Literature review, research paper analysis, and critical article verification for academic standards.</div>
+              <div class="member-tags">
+                <span class="pill">Research</span>
+                <span class="pill">Verification</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="300ms">
+            <div class="member-top">
+              <img src="images/shantasree.png" alt="Shantasree Roy" class="member-img">
+              <span class="member-num">06</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">Project Support</div>
+              <div class="member-name">Shantasree Roy</div>
+              <div class="member-roll">Roll: 22UPE093</div>
+              <div class="member-desc">Assisting in diverse project tasks, data organization, and supporting general operational requirements.</div>
+              <div class="member-tags">
+                <span class="pill">Misc Tasks</span>
+                <span class="pill">Support</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card" data-sr data-sr-delay="360ms">
+            <div class="member-top">
+              <img src="images/bishal.png" alt="Bishal Debnath" class="member-img">
+              <span class="member-num">07</span>
+            </div>
+            <div class="member-body">
+              <div class="member-role">System Maintenance</div>
+              <div class="member-name">Bishal Debnath</div>
+              <div class="member-roll">Roll: 22UPE014</div>
+              <div class="member-desc">General maintenance support, workspace management, and foundational project contributions.</div>
+              <div class="member-tags">
+                <span class="pill">Maintenance</span>
+                <span class="pill">Operations</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Contribution bars -->
+        <div class="card" style="padding:28px;margin-top:24px;" data-sr>
+          <div style="font-size:15px;font-weight:600;margin-bottom:20px;">Work Distribution (Estimated)</div>
+          <div class="contrib-table">
+            <div class="ct-row">
+              <span class="ct-name">Saurabh P.</span>
+              <span class="ct-domain">Software</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:95%"></div>
+              </div>
+              <span class="ct-pct">95%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Sandip R.</span>
+              <span class="ct-domain">Mechanical</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:92%"></div>
+              </div>
+              <span class="ct-pct">92%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Himanshu S.</span>
+              <span class="ct-domain">Mechanical</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:85%"></div>
+              </div>
+              <span class="ct-pct">85%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Kumar S.</span>
+              <span class="ct-domain">Logistics</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:75%"></div>
+              </div>
+              <span class="ct-pct">75%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Vankudoth N.</span>
+              <span class="ct-domain">Research</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:70%"></div>
+              </div>
+              <span class="ct-pct">70%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Shantasree R.</span>
+              <span class="ct-domain">Support</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:40%"></div>
+              </div>
+              <span class="ct-pct">40%</span>
+            </div>
+            <div class="ct-row">
+              <span class="ct-name">Bishal D.</span>
+              <span class="ct-domain">Maintenance</span>
+              <div class="ct-bar-wrap">
+                <div class="ct-bar" style="width:20%"></div>
+              </div>
+              <span class="ct-pct">20%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ STEPS FLOW (Methodology) ═══ -->
+    <section class="steps-section" id="methodology">
+      <div class="wrap">
+        <div style="text-align:center;">
+          <p class="eyebrow">Development Lifecycle</p>
+          <h2 class="h-1">Project Steps Flow Diagram</h2>
+          <p class="body-md" style="margin-top:12px; max-width:600px; margin-left:auto; margin-right:auto;">
+            The project followed a rigorous engineering lifecycle, from initial study to the final verified prototype.
+          </p>
+        </div>
+
+        <div class="steps-container">
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Concept Development</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">Initially, existing automated writing systems were studied to identify their
+                limitations. Based on the study, the concept of combining speech recognition with an automated
+                handwriting mechanism was finalized.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Design Phase</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">The mechanical structure of the machine was designed using CAD software. Proper
+                arrangement of motors, rods, belts, and the pen holder was planned to ensure smooth movement and
+                accurate writing.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Fabrication</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">Custom mechanical parts such as motor mounts and pen holders were fabricated using a
+                3D printer. All required mechanical and electrical components were collected for assembly.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Assembly</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">The frame, rods, belts, pulleys, and motors were assembled carefully. Arduino, CNC
+                Shield, and other electrical components were installed and connected properly.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Programming & Software</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">A web-based interface was developed for voice input and speech recognition. The
+                processed text was converted into G-code, and Arduino was programmed to control motor movement and
+                writing operations.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Integration</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">The software and hardware systems were integrated using serial communication between
+                the computer and Arduino. Proper data transfer and synchronization were ensured.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Testing & Calibration</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">The machine was calibrated by adjusting belt tension, servo angles, and motor
+                movement. X and Y axis motion was tested to achieve smooth and accurate writing.</p>
+            </div>
+          </div>
+
+          <div class="step-item" data-sr>
+            <div class="step-aside">
+              <div class="step-chevron">Final Testing</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <p class="step-text">The complete system was tested for real-time voice-to-writing performance. Writing
+                accuracy, speed, alignment, and output quality were verified and improved through repeated testing.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ HARDWARE SHOWCASE ═══ -->
+    <section class="hardware-section" id="hardware">
+      <div class="wrap">
+        <div style="text-align:center;">
+          <p class="eyebrow">Physical Prototype</p>
+          <h2 class="h-1">Hardware Prototype Showcase</h2>
+          <p class="body-md" style="margin-top:12px; max-width:600px; margin-left:auto; margin-right:auto;">
+            The physical assembly of VoiceScribe utilizes precision linear motion components and custom 3D printed parts.
+          </p>
+        </div>
+
+        <div class="hardware-card" data-sr>
+          <div class="hw-img-wrap">
+            <img src="images/machine.png" alt="Machine Design Views" class="hw-img">
+          </div>
+          <div class="hw-info">
+            <div class="mono" style="margin-bottom:8px;">// Technical Specifications</div>
+            <h3 class="h-2">System Build Details</h3>
+            <p class="body-sm" style="margin-top:12px;">
+              Designed for high-accuracy handwriting emulation. The system uses a CNC Shield v3.0 driven by an Arduino Uno.
+            </p>
+
+            <div class="hw-spec-list">
+              <div class="hw-spec-item">
+                <span class="hw-spec-label">Controller</span>
+                <span class="hw-spec-val">Arduino Uno + CNC Shield</span>
+              </div>
+              <div class="hw-spec-item">
+                <span class="hw-spec-label">Motors</span>
+                <span class="hw-spec-val">2x NEMA 17 Stepper</span>
+              </div>
+              <div class="hw-spec-item">
+                <span class="hw-spec-label">Pen Lift</span>
+                <span class="hw-spec-val">SG90 Micro Servo</span>
+              </div>
+              <div class="hw-spec-item">
+                <span class="hw-spec-label">Firmware</span>
+                <span class="hw-spec-val">GRBL v1.1</span>
+              </div>
+              <div class="hw-spec-item">
+                <span class="hw-spec-label">Power</span>
+                <span class="hw-spec-val">12V 5A DC Supply</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="thesis">
+      <div class="wrap-sm">
+        <p class="eyebrow">Academic Report</p>
+        <h2 class="h-1" style="margin-bottom:32px;">Thesis Document</h2>
+
+        <!-- Download hero -->
+        <div class="thesis-download-hero" data-sr>
+          <div class="tdh-left">
+            <div class="tdh-icon">📑</div>
+            <div>
+              <div class="tdh-title">VoiceScribe — Project Thesis</div>
+              <div class="tdh-meta">Voice-Controlled Arduino Writing Machine using a Custom Web Application · NIT
+                Agartala · 2026 · PDF · 1.5 MB</div>
+            </div>
+          </div>
+          <a href="thesis.pdf" download="VoiceScribe_Thesis.pdf" class="btn btn-primary">
+            ↓ Download PDF
+          </a>
+        </div>
+
+        <!-- Abstract -->
+        <div style="margin-bottom:48px;" data-sr>
+          <p class="eyebrow">Abstract</p>
+          <div class="card" style="padding:28px 32px;">
+            <p class="body-md" style="font-style:italic;line-height:1.85;">
+              VoiceScribe is a voice-controlled 2D CNC writing machine that enables real-time, voice-to-paper
+              handwriting — designed primarily as an assistive device for individuals with upper-limb motor impairments.
+              The system uses the <strong style="color:var(--text);font-style:normal;">Web Speech API</strong> for voice
+              recognition, a custom <strong style="color:var(--text);font-style:normal;">JavaScript Hershey-font
+                engine</strong> for converting text to vector G-code paths, and the <strong
+                style="color:var(--text);font-style:normal;">Web Serial API</strong> for direct browser-to-Arduino
+              communication. Hardware comprises an Arduino Uno running GRBL, two NEMA 17 stepper motors, an SG90 servo,
+              and a custom 3D-printed frame. Total build cost: <strong
+                style="color:var(--text);font-style:normal;">under ₹4,000 (~$50)</strong> — 10× cheaper than commercial
+              alternatives, with no external software required.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chapter list -->
+        <div data-sr>
+          <p class="eyebrow" style="margin-bottom:24px;">Thesis Chapters</p>
+          <div class="chapter-list">
+
+            <div class="chap-row">
+              <div class="chap-n">1</div>
+              <div>
+                <div class="chap-label">Chapter One</div>
+                <div class="chap-title">Introduction</div>
+                <div class="chap-desc">Problem statement — motor-impaired individuals cannot write. Context (mandatory
+                  handwriting in exams), motivation, scope, and thesis organization.</div>
+                <div class="chap-tags"><span class="pill">Problem</span><span class="pill">Motivation</span><span
+                    class="pill">Scope</span></div>
+              </div>
+            </div>
+
+            <div class="chap-row">
+              <div class="chap-n">2</div>
+              <div>
+                <div class="chap-label">Chapter Two</div>
+                <div class="chap-title">Literature Review</div>
+                <div class="chap-desc">Survey of existing pen plotters, CNC writing machines, assistive writing tools,
+                  Web Serial API research, GRBL firmware, and Hershey font engineering applications.</div>
+                <div class="chap-tags"><span class="pill">Prior Art</span><span class="pill">Research Gap</span></div>
+              </div>
+            </div>
+
+            <div class="chap-row">
+              <div class="chap-n">3</div>
+              <div>
+                <div class="chap-label">Chapter Three</div>
+                <div class="chap-title">System Design & Architecture</div>
+                <div class="chap-desc">4-layer pipeline (Voice → Web App → Web Serial → Hardware). Mechanical H-Bot
+                  kinematics, electrical CNC shield wiring, software voice + G-code engine architecture.</div>
+                <div class="chap-tags"><span class="pill">Architecture</span><span class="pill">Mechanical</span><span
+                    class="pill">Electrical</span><span class="pill">Software</span></div>
+              </div>
+            </div>
+
+            <div class="chap-row">
+              <div class="chap-n">4</div>
+              <div>
+                <div class="chap-label">Chapter Four</div>
+                <div class="chap-title">Implementation & Fabrication</div>
+                <div class="chap-desc">Frame assembly (M8 threaded rods), 3D printing of 6 custom STL components, CNC
+                  shield wiring, GRBL calibration (steps/mm, feed rate, servo angles), and web app development.</div>
+                <div class="chap-tags"><span class="pill">Fabrication</span><span class="pill">3D Printing</span><span
+                    class="pill">GRBL</span><span class="pill">Web App</span></div>
+              </div>
+            </div>
+
+            <div class="chap-row">
+              <div class="chap-n">5</div>
+              <div>
+                <div class="chap-label">Chapter Five</div>
+                <div class="chap-title">Testing, Results & Analysis</div>
+                <div class="chap-desc">Voice recognition accuracy, writing speed, character accuracy, latency
+                  measurement (&lt;500ms), repeatability, pen pressure. Comparison with AxiDraw & Scribit. Cost
+                  analysis.</div>
+                <div class="chap-tags"><span class="pill">Performance</span><span class="pill">Cost Analysis</span><span
+                    class="pill">Comparison</span></div>
+              </div>
+            </div>
+
+            <div class="chap-row">
+              <div class="chap-n">6</div>
+              <div>
+                <div class="chap-label">Chapter Six</div>
+                <div class="chap-title">Conclusion & Future Work</div>
+                <div class="chap-desc">Summary of achievements, limitations (font set, paper size, noise sensitivity).
+                  Future: multi-language support, AI handwriting replication, wireless Bluetooth, offline speech
+                  recognition.</div>
+                <div class="chap-tags"><span class="pill">Conclusion</span><span class="pill">Limitations</span><span
+                    class="pill">Future Scope</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align:center;padding:48px 0 0;" data-sr>
+          <a href="thesis.pdf" download="VoiceScribe_Thesis.pdf" class="btn btn-primary"
+            style="font-size:15px;padding:13px 28px;">
+            ↓ Download Complete Thesis PDF
+          </a>
+          <p class="body-sm" style="margin-top:12px;">PDF · 1.5 MB · NIT Agartala · 2026</p>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- .page -->
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 VoiceScribe · NIT Agartala · Dept. of Production Engineering</span>
+        <nav class="footer-nav">
+          <a href="index.html">Home</a>
+          <a href="control.html">Control Panel</a>
+          <a href="thesis.pdf" download>Thesis PDF</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

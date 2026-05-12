@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VoiceScribe — NIT Agartala</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── HOME PAGE STYLES ── */
+
+    /* Hero */
+    .hero {
+      min-height: calc(100vh - 52px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 0 60px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px 6px 8px;
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
+      margin-bottom: 32px;
+      width: fit-content;
+    }
+
+    .hero-kicker span {
+      font-size: 10px;
+    }
+
+    .hero-title {
+      margin-bottom: 24px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--text-2);
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      color: var(--text-2);
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero aside — specs panel */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .specs-panel {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .specs-panel-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .specs-panel-head .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-r {
+      background: #ff5f57;
+    }
+
+    .dot-y {
+      background: #febc2e;
+    }
+
+    .dot-g {
+      background: #28c840;
+    }
+
+    .specs-panel-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      margin-left: 4px;
+      letter-spacing: .05em;
+    }
+
+    .specs-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .specs-row:last-child {
+      border-bottom: none;
+    }
+
+    .specs-k {
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .04em;
+    }
+
+    .specs-v {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Stat strip */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--border);
+      gap: 1px;
+      margin: 64px 0;
+    }
+
+    .stat-cell {
+      background: var(--bg-1);
+      padding: 24px 20px;
+      transition: background .2s;
+    }
+
+    .stat-cell:hover {
+      background: var(--bg-2);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    /* Feature cards */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .feat-card {
+      padding: 28px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color .25s, box-shadow .25s, transform .2s;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feat-card:hover {
+      border-color: var(--border-2);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .feat-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .feat-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .feat-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    .feat-arrow {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      color: var(--text-3);
+      font-size: 16px;
+      transition: all .2s;
+    }
+
+    .feat-card:hover .feat-arrow {
+      color: var(--text);
+      transform: translate(2px, -2px);
+    }
+
+    /* Thesis download strip */
+    .thesis-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 28px;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .thesis-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .thesis-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .thesis-strip h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .thesis-strip p {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    @media(max-width:900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .specs-panel {
+        display: none;
+      }
+
+      .feat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-strip {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:560px) {
+      .feat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── FLOWCHART ── */
+    .flow-section {
+      background: var(--bg);
+      padding: 100px 0;
+      position: relative;
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .flow-dashboard {
+      max-width: 900px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    /* Connecting paths (Desktop) */
+    .flow-dashboard::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      bottom: 40px;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--border), var(--text-3), var(--border));
+      transform: translateX(-50%);
+      z-index: 0;
+    }
+
+    .flow-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .flow-item:nth-child(even) {
+      padding-top: 60px;
+    }
+
+    .flow-box {
+      background: rgba(20, 20, 20, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .flow-item:hover .flow-box {
+      border-color: var(--text-2);
+      transform: translateY(-4px) scale(1.02);
+      background: rgba(30, 30, 30, 0.8);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    .flow-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .flow-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flow-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .flow-meta {
+      font-size: 11px;
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Connector line logic */
+    .flow-item::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 20px;
+      height: 2px;
+      background: var(--border);
+      z-index: -1;
+    }
+
+    .flow-item:nth-child(odd)::after {
+      right: -16px;
+      transform: translateY(-50%);
+    }
+
+    .flow-item:nth-child(even)::after {
+      left: -16px;
+      transform: translateY(-50%);
+    }
+
+    @media(max-width:800px) {
+      .flow-dashboard {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .flow-dashboard::before {
+        left: 20px;
+        transform: none;
+      }
+      .flow-item:nth-child(even) {
+        padding-top: 0;
+      }
+      .flow-item::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg viewBox="0 0 14 14" fill="none">
+          <path d="M7 2a2 2 0 0 0-2 2v3a2 2 0 0 0 4 0V4a2 2 0 0 0-2-2Z" fill="currentColor"
+            style="fill:var(--accent-inv)" />
+          <path d="M4 7a3 3 0 0 0 6 0" stroke="var(--accent-inv)" stroke-width="1.2" fill="none" />
+          <line x1="7" y1="10" x2="7" y2="13" stroke="var(--accent-inv)" stroke-width="1.2" />
+          <line x1="5" y1="13" x2="9" y2="13" stroke="var(--accent-inv)" stroke-width="1.2" />
+        </svg>
+      </div>
+      <span class="nav-brand-name">VoiceScribe</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About Project</a></li>
+      <li><a href="control.html">Control Panel</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="theme-pill" id="themePill">
+        <span class="theme-pill-dot">🌙</span>
+        <span class="theme-pill-label">Dark</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── PAGE ── -->
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-kicker">
+              <span>🎓</span> NIT Agartala · Dept. of Production Engineering · 2026
+            </div>
+            <h1 class="h-display hero-title">
+              Voice<em>Scribe</em><br>Writing Machine
+            </h1>
+            <p class="hero-desc">
+              Speak — and the machine writes. A voice-controlled 2D CNC plotter that converts spoken words into real
+              pen-on-paper handwriting in under 500ms.
+            </p>
+            <div class="hero-actions">
+              <a href="control.html" class="btn btn-primary">Open Control Panel →</a>
+              <a href="about.html" class="btn btn-outline">About the Project</a>
+            </div>
+          </div>
+
+          <!-- Specs panel -->
+          <div class="specs-panel" data-sr>
+            <div class="specs-panel-head">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <span class="specs-panel-title">system_specs.json</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">controller</span><span class="specs-v">Arduino Uno +
+                GRBL</span></div>
+            <div class="specs-row"><span class="specs-k">x_y_motors</span><span class="specs-v">NEMA 17 Stepper</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">z_axis</span><span class="specs-v">SG90 Micro Servo</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">drivers</span><span class="specs-v">A4988 (1/16 step)</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">motion_type</span><span class="specs-v">H-Bot / CoreXY
+                Belt</span></div>
+            <div class="specs-row"><span class="specs-k">interface</span><span class="specs-v">Chrome + Web
+                Serial</span></div>
+            <div class="specs-row"><span class="specs-k">voice_api</span><span class="specs-v">Web Speech API</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">font_engine</span><span class="specs-v">Hershey (JS)</span>
+            </div>
+            <div class="specs-row"><span class="specs-k">latency</span><span class="specs-v">&lt; 500ms</span></div>
+            <div class="specs-row"><span class="specs-k">build_cost</span><span class="specs-v">₹3,000 – ₹4,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="wrap" style="padding-bottom:0">
+      <div class="stat-strip" data-sr>
+        <div class="stat-cell">
+          <div class="stat-num">₹4K</div>
+          <div class="stat-label">Total build cost</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">&lt;500<span
+              style="font-size:16px;font-family:'Inter',sans-serif;font-weight:400">ms</span></div>
+          <div class="stat-label">Voice-to-paper latency</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">0</div>
+          <div class="stat-label">External software needed</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">10×</div>
+          <div class="stat-label">Cheaper than commercial alternatives</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE CARDS / PAGE NAVIGATION -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Navigate</p>
+        <h2 class="h-1">Explore the project</h2>
+
+        <div class="feat-grid">
+          <a href="about.html" class="feat-card" data-sr data-sr-delay="0ms">
+            <div class="feat-icon">👥</div>
+            <div class="feat-title">About the Project</div>
+            <div class="feat-desc">Meet the project mentor, team members, and their individual contributions. Plus a
+              direct thesis PDF download.</div>
+            <span class="feat-arrow">↗</span>
+          </a>
+
+
+
+          <a href="control.html" class="feat-card" data-sr data-sr-delay="120ms">
+            <div class="feat-icon">🎙️</div>
+            <div class="feat-title">Control Panel</div>
+            <div class="feat-desc">Live voice input, text-to-write mode, real-time G-code stream, XY canvas preview, and
+              machine controls.</div>
+            <span class="feat-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Pipeline</p>
+        <h2 class="h-1" style="margin-bottom:40px;">How it works — 4 steps</h2>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div class="card" style="padding:24px 20px;" data-sr data-sr-delay="0ms">
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:12px;letter-spacing:.06em;">
+              01 — INPUT</div>
+            <div style="font-size:22px;margin-bottom:12px;">🎙️</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Voice Capture</div>
+            <div class="body-sm">Web Speech API converts spoken words to text in real-time via the browser microphone.
+            </div>
+          </div>
+          <div class="card" style="padding:24px 20px;" data-sr data-sr-delay="80ms">
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:12px;letter-spacing:.06em;">
+              02 — PROCESS</div>
+            <div style="font-size:22px;margin-bottom:12px;">⚙️</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Vector Engine</div>
+            <div class="body-sm">Custom JS converts text to Hershey font vector paths — single-stroke coordinates for
+              each character.</div>
+          </div>
+          <div class="card" style="padding:24px 20px;" data-sr data-sr-delay="160ms">
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:12px;letter-spacing:.06em;">
+              03 — TRANSMIT</div>
+            <div style="font-size:22px;margin-bottom:12px;">📡</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Web Serial API</div>
+            <div class="body-sm">G-code streams directly from Chrome to the Arduino USB port — no drivers, no
+              middleware.</div>
+          </div>
+          <div class="card" style="padding:24px 20px;" data-sr data-sr-delay="240ms">
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:12px;letter-spacing:.06em;">
+              04 — WRITE</div>
+            <div style="font-size:22px;margin-bottom:12px;">✍️</div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Pen on Paper</div>
+            <div class="body-sm">NEMA 17 steppers move X/Y axes while SG90 servo lifts the pen between characters.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNICAL FLOWCHART -->
+    <section class="flow-section">
+      <div class="wrap">
+        <div class="flow-header">
+          <p class="eyebrow">Technical Architecture</p>
+          <h2 class="h-1">Flowchart of the System</h2>
+          <p class="body-md" style="margin-top:12px; max-width:600px; margin-left:auto; margin-right:auto;">
+            A high-fidelity data pipeline that orchestrates voice recognition and mechanical precision.
+          </p>
+        </div>
+
+        <div class="flow-dashboard">
+          <div class="flow-item" data-sr>
+            <div class="flow-box">
+              <div class="flow-icon">🎙️</div>
+              <div class="flow-info">
+                <span class="flow-name">Voice Input</span>
+                <span class="flow-meta">Stage 01 — Capture</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="50ms">
+            <div class="flow-box">
+              <div class="flow-icon">🧠</div>
+              <div class="flow-info">
+                <span class="flow-name">Speech Recognition</span>
+                <span class="flow-meta">Stage 02 — Analysis</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="100ms">
+            <div class="flow-box">
+              <div class="flow-icon">📝</div>
+              <div class="flow-info">
+                <span class="flow-name">Text Processing</span>
+                <span class="flow-meta">Stage 03 — Parsing</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="150ms">
+            <div class="flow-box">
+              <div class="flow-icon">📐</div>
+              <div class="flow-info">
+                <span class="flow-name">Vector Conversion</span>
+                <span class="flow-meta">Stage 04 — Geometry</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="200ms">
+            <div class="flow-box">
+              <div class="flow-icon">⚙️</div>
+              <div class="flow-info">
+                <span class="flow-name">G-code Generation</span>
+                <span class="flow-meta">Stage 05 — Logic</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="250ms">
+            <div class="flow-box">
+              <div class="flow-icon">📡</div>
+              <div class="flow-info">
+                <span class="flow-name">Serial Communication</span>
+                <span class="flow-meta">Stage 06 — Stream</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="300ms">
+            <div class="flow-box">
+              <div class="flow-icon">💎</div>
+              <div class="flow-info">
+                <span class="flow-name">Arduino Processing</span>
+                <span class="flow-meta">Stage 07 — Execution</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="350ms">
+            <div class="flow-box">
+              <div class="flow-icon">🏗️</div>
+              <div class="flow-info">
+                <span class="flow-name">Motor Control</span>
+                <span class="flow-meta">Stage 08 — Kinematics</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="400ms">
+            <div class="flow-box">
+              <div class="flow-icon">✍️</div>
+              <div class="flow-info">
+                <span class="flow-name">Writing on Paper</span>
+                <span class="flow-meta">Stage 09 — Output</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-item" data-sr data-sr-delay="450ms">
+            <div class="flow-box">
+              <div class="flow-icon">🎉</div>
+              <div class="flow-info">
+                <span class="flow-name">Success</span>
+                <span class="flow-meta">System End</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+  </div><!-- .page -->
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 VoiceScribe · NIT Agartala · Dept. of Production Engineering</span>
+        <nav class="footer-nav">
+          <a href="about.html">About</a>
+          <a href="control.html">Control Panel</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

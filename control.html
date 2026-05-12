@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VoiceScribe — Control Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="control.css">
+</head>
+
+<body>
+
+  <!-- ═══ TOPBAR ═══ -->
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">VS</div>
+      <span class="nav-title">VoiceScribe</span>
+      <span class="nav-slash">/ control</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="control.html" class="active">Control Panel</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="dev-pill" id="devPill" onclick="App.toggleDev()">
+        <div class="dev-led"></div>
+        <span id="devLbl">Dev Mode</span>
+      </div>
+      <button class="theme-btn" id="themeBtn" onclick="App.toggleTheme()">🌙</button>
+    </div>
+  </nav>
+
+  <!-- ═══ STATUS BAR ═══ -->
+  <div class="status-bar">
+    <div class="chip" id="chipConn">
+      <div class="dot" id="dConn"></div><span id="lConn">Disconnected</span>
+    </div>
+    <div class="chip" id="chipMic">
+      <div class="dot" id="dMic"></div> <span id="lMic">Mic off</span>
+    </div>
+    <div class="chip">
+      <div class="dot" id="dPen"></div> <span id="lPen">Pen up</span>
+    </div>
+    <div class="chip" id="chipGrbl">
+      <div class="dot" id="dGrbl"></div><span id="lGrbl">GRBL —</span>
+    </div>
+    <span class="bar-clock" id="clock">--:--:--</span>
+  </div>
+
+  <!-- ═══ LAYOUT ═══ -->
+  <div class="layout">
+
+    <!-- ──── LEFT ──── -->
+    <div class="left">
+
+      <!-- 1. CONNECTION -->
+      <div class="sec">
+        <div class="sec-lbl">Robot Connection (USB)</div>
+        <select class="baud-sel" id="baudSel">
+          <option value="115200" selected>115200 baud — GRBL 1.1 (default)</option>
+          <option value="9600">9600 baud — GRBL v0.8 / older</option>
+          <option value="57600">57600 baud</option>
+        </select>
+        <button class="conn-btn" id="connBtn" onclick="App.doConnect()">
+          <span id="connIcon">🔌</span>
+          <span id="connTxt">Connect Arduino (USB)</span>
+        </button>
+        <div class="grbl-badge" id="grblBadge">GRBL response yahan dikhega…</div>
+      </div>
+
+      <!-- 2. PEN CALIBRATION — UNIVERSAL -->
+      <div class="sec">
+        <div class="sec-lbl">Pen Control — Universal</div>
+        <div class="servo-box">
+          <!-- Mode Toggle -->
+          <div class="dwell-row" style="border-top:none;padding-top:0;justify-content:space-between;">
+            <span class="srv-label" style="width:auto;">MODE</span>
+            <div style="display:flex;gap:6px;">
+              <button class="cb" id="modePwmBtn"
+                onclick="App.setPenMode('pwm');this.classList.add('pdn');$('modeZBtn').classList.remove('pdn');$('pwmControls').style.display='block';$('zControls').style.display='none';App.notify('Mode: Servo PWM')">PWM</button>
+              <button class="cb" id="modeZBtn"
+                onclick="App.setPenMode('zaxis');this.classList.add('pdn');$('modePwmBtn').classList.remove('pdn');$('pwmControls').style.display='none';$('zControls').style.display='block';App.notify('Mode: Z-Axis')">Z-Axis</button>
+            </div>
+          </div>
+
+          <!-- PWM Controls -->
+          <div id="pwmControls">
+            <div class="servo-row">
+              <span class="srv-label">UP (S)</span>
+              <input type="range" class="srv-slider" id="sUpSlider" min="0" max="255" value="128"
+                oninput="App.onSrvUp(+this.value)">
+              <span class="srv-val" id="sUpVal" style="color:var(--green);">128</span>
+              <button class="srv-test" onclick="App.testServo('up')">▲</button>
+            </div>
+            <div class="servo-row">
+              <span class="srv-label">DN (S)</span>
+              <input type="range" class="srv-slider" id="sDnSlider" min="0" max="255" value="227"
+                oninput="App.onSrvDn(+this.value)">
+              <span class="srv-val" id="sDnVal" style="color:var(--red);">227</span>
+              <button class="srv-test" onclick="App.testServo('dn')">▼</button>
+              <button class="srv-test" onclick="App.servoSweep()" id="sweepBtn"
+                style="color:var(--amber);border-color:rgba(251,191,36,.2);">Sweep</button>
+            </div>
+          </div>
+
+          <!-- Z-Axis Controls -->
+          <div id="zControls" style="display:none;">
+            <div class="servo-row">
+              <span class="srv-label">UP (Z)</span>
+              <input type="number" class="dwell-in" value="5" step="1" oninput="App.config.zUp=+this.value">
+              <button class="srv-test" onclick="App.enq('G0 Z'+App.config.zUp+' F2000')">Test ▲</button>
+            </div>
+            <div class="servo-row">
+              <span class="srv-label">DN (Z)</span>
+              <input type="number" class="dwell-in" value="0" step="1" oninput="App.config.zDn=+this.value">
+              <button class="srv-test" onclick="App.enq('G1 Z'+App.config.zDn+' F'+App.config.feedRate)">Test ▼</button>
+            </div>
+          </div>
+
+          <!-- Dwell UP -->
+          <div class="dwell-row">
+            <span class="srv-label">DWELL UP</span>
+            <input type="number" class="dwell-in" id="dwellUpIn" value="250" min="50" max="2000" step="50"
+              oninput="App.config.dwellUp = parseInt(this.value) || 250; $('ptDwellUp').textContent = App.config.dwellUp + ' ms'; App.save()">
+            <span class="dwell-unit">ms</span>
+          </div>
+          <!-- Dwell DN -->
+          <div class="dwell-row" style="border-top:none;padding-top:0;">
+            <span class="srv-label">DWELL DN</span>
+            <input type="number" class="dwell-in" id="dwellDnIn" value="250" min="50" max="2000" step="50"
+              oninput="App.config.dwellDn = parseInt(this.value) || 250; $('ptDwellDn').textContent = App.config.dwellDn + ' ms'; App.save()">
+            <span class="dwell-unit">ms</span>
+          </div>
+
+          <!-- Servo Hold -->
+          <div class="dwell-row" style="border-top:none;padding-top:0;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;">
+              <input type="checkbox" id="holdCheck"
+                onchange="App.config.servoHold=this.checked;$('ptHold').textContent=App.config.servoHold?'ON':'OFF';App.save()">
+              <span class="srv-label" style="width:auto;">PWM HOLD</span>
+            </label>
+            <span class="dwell-unit" style="margin-left:auto;">Prevent droop</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. MIC -->
+      <div class="mic-sec">
+        <div class="mic-controls" style="margin-bottom:12px; display:flex; justify-content:center;">
+          <select id="langSel" class="baud-sel" style="width:140px; height:32px; font-size:12px; margin:0;"
+            onchange="App.setVoiceLang(this.value)">
+            <option value="en-IN">English (India)</option>
+            <option value="hi-IN" selected>Hindi </option>
+          </select>
+        </div>
+        <div class="mic-state-lbl" id="micStateLbl">Click mic to start</div>
+        <div class="mic-wrap" id="micWrap">
+          <div class="mring mr1"></div>
+          <div class="mring mr2"></div>
+          <div class="mic-btn" id="micBtn" onclick="App.toggleMic()">🎙️</div>
+        </div>
+        <div class="wf" id="wf">
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+          <div class="wb"></div>
+        </div>
+        <div class="mic-hint">
+          <strong>Speak Clearly</strong> — machine writing starts<br>
+          <span style="font-size:11px;display:block;margin-top:3px;">
+            "Write Hello" &nbsp;·&nbsp; "Type your name" &nbsp;·&nbsp; "Clear Board"
+          </span>
+        </div>
+      </div>
+
+      <!-- 4. TRANSCRIPT -->
+      <div class="t-wrap">
+        <div class="t-lbl">What are You saying</div>
+        <div class="t-box" id="tBox">
+          <span class="t-ph" id="tPh">Transcript is writing here…</span>
+          <div id="tFinal" style="display:none;"></div>
+          <div id="tInterim" style="display:none; margin-top: 8px;"></div>
+        </div>
+      </div>
+
+      <!-- 5. TYPE TO WRITE -->
+      <div class="type-row">
+        <input class="type-in" id="typeIn" type="text" placeholder="Type here to write…"
+          onkeydown="if(event.key==='Enter')App.doTypeWrite()" autocomplete="off">
+        <button class="type-send" id="typeBtn" onclick="App.doTypeWrite()">↵ Write</button>
+      </div>
+
+      <!-- 6. SPEED -->
+      <div class="sec">
+        <div class="sec-lbl">Writing Speed</div>
+        <div class="speed-head">
+          <span>Feed Rate</span>
+          <span class="speed-val" id="speedDisp">1000 mm/min</span>
+        </div>
+        <input type="range" id="feedRateSlider" min="200" max="3000" value="1000"
+          oninput="App.config.feedRate=+this.value;document.getElementById('speedDisp').textContent=App.config.feedRate+' mm/min';App.save()">
+      </div>
+
+    </div><!-- .left -->
+
+    <!-- ──── RIGHT ──── -->
+    <div class="right">
+
+      <!-- Canvas -->
+      <div class="canvas-wrap">
+        <canvas id="cvs" width="720" height="260"></canvas>
+        <div class="grid-ov"></div>
+        <div class="cvs-overlay" id="cvsOverlay">
+          <div class="ce-title" id="ceTitle">WORKSPACE READY TO WRITE, SPEAK CLEARLY</div>
+        </div>
+        <div class="axis-x">X AXIS ➔</div>
+        <div class="axis-y">Y AXIS ➔</div>
+        <div class="origin-mark"></div>
+        <div class="origin-lbl">0,0</div>
+      </div>
+
+      <!-- Coords -->
+      <div class="coord-strip">
+        <div class="coord-cell">
+          <div class="co-l">X Axis (mm)</div>
+          <div class="co-v" id="coX">0.00</div>
+        </div>
+        <div class="coord-cell">
+          <div class="co-l">Y Axis (mm)</div>
+          <div class="co-v" id="coY">0.00</div>
+        </div>
+        <div class="coord-cell">
+          <div class="co-l">Pen</div>
+          <div class="co-v" id="coPen" style="font-size:12px;">▲ UP</div>
+        </div>
+        <div class="coord-cell">
+          <div class="co-l">Session</div>
+          <div class="co-v" id="coSess" style="font-size:12px;">00:00</div>
+        </div>
+      </div>
+
+      <!-- Jog Controller -->
+      <div class="sec" style="margin-top:16px;">
+        <div class="sec-lbl">Manual Alignment (Jog)</div>
+        <div class="jog-pad">
+          <div class="jog-row">
+            <button class="cb" onclick="App.doJog('Y', 5)">Y+5</button>
+          </div>
+          <div class="jog-row">
+            <button class="cb" onclick="App.doJog('X', -5)">X-5</button>
+            <button class="cb" onclick="App.doJog('X', 5)">X+5</button>
+          </div>
+          <div class="jog-row">
+            <button class="cb" onclick="App.doJog('Y', -5)">Y-5</button>
+          </div>
+          <div class="jog-hint">Relative move (5mm)</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="ctrl-strip">
+        <button class="cb" onclick="App.doHome()">⌂ Home</button>
+        <button class="cb" onclick="App.doClear()">✕ Clear</button>
+        <button class="cb btn-warn" id="pauseBtn" onclick="App.togglePause()"
+          style="border-color:rgba(251,191,36,.3);color:var(--amber);">⏸ Pause</button>
+        <button class="estop" onclick="App.eStop()">⛔ Stop</button>
+      </div>
+
+      <!-- Progress -->
+      <div class="prog-row">
+        <span class="prog-lbl">PROGRESS</span>
+        <div class="prog-bar">
+          <div class="prog-fill" id="progFill"></div>
+        </div>
+        <div class="prog-txt">PROGRESS: <span id="progPct">0%</span></div>
+      </div>
+
+      <!-- DEV SECTION -->
+      <div class="dev-sec" id="devSec">
+        <div class="dev-tabs">
+          <button class="dev-tab active" onclick="App.devTab('gcode',this)">G-Code Log</button>
+          <button class="dev-tab" onclick="App.devTab('syslog',this)">System Log</button>
+          <button class="dev-tab" onclick="App.devTab('params',this)">Parameters</button>
+          <button class="cb" style="margin-left:auto;padding:4px 8px;font-size:10px;" onclick="App.enq('$I')">Check
+            Firmware</button>
+          <button class="cb" style="margin-left:6px;padding:4px 8px;font-size:10px;"
+            onclick="App.fetchGrblSettings()">Refresh $$</button>
+        </div>
+
+        <div class="dev-pane active" id="pane-gcode">
+          <div class="gc-log" id="gcLog">
+            <div class="gc-c">; VoiceScribe · NIT Agartala</div>
+            <div class="gc-c">; Guide: Dr. Debashis Podder</div>
+            <div class="gc-m">G21 <span class="gc-c">; mm</span></div>
+            <div class="gc-m">G90 <span class="gc-c">; absolute</span></div>
+            <div class="gc-m">M5 <span class="gc-c">; spindle off / servo idle</span></div>
+          </div>
+        </div>
+
+        <div class="dev-pane" id="pane-syslog">
+          <div class="sys-log" id="sysLog">
+            <div class="sl-row"><span class="sl-t">00:00:00</span><span class="sl-ok">System ready</span></div>
+            <div class="sl-row"><span class="sl-t">00:00:00</span><span class="sl-warn">Awaiting USB…</span></div>
+          </div>
+        </div>
+
+        <div class="dev-pane" id="pane-params">
+          <div class="pt-row"><span class="pt-k">FIRMWARE</span> <span class="pt-v">GRBL 1.1h</span></div>
+          <div class="pt-row"><span class="pt-k">BAUD</span> <span class="pt-v" id="ptBaud">115200</span></div>
+          <div class="pt-row"><span class="pt-k">STEPS_MM_X/Y</span><span class="pt-v">80.000</span></div>
+          <div class="pt-row"><span class="pt-k">MAX_FEED</span> <span class="pt-v">3000 mm/min</span></div>
+          <div class="pt-row"><span class="pt-k">SERVO_UP_S</span> <span class="pt-v" id="ptUp">M3 S128 (90°)</span>
+          </div>
+          <div class="pt-row"><span class="pt-k">SERVO_DN_S</span> <span class="pt-v" id="ptDn">M3 S227 (160°)</span>
+          </div>
+          <div class="pt-row">
+            <span class="pt-k">WORK_AREA_X</span>
+            <input type="number" id="maxXIn" class="dwell-in" style="width:60px;height:20px;font-size:11px;" value="200"
+              oninput="App.config.maxX=+this.value;App.save()">
+            <span class="pt-v">mm</span>
+          </div>
+          <div class="pt-row">
+            <span class="pt-k">WORK_AREA_Y</span>
+            <input type="number" id="maxYIn" class="dwell-in" style="width:60px;height:20px;font-size:11px;" value="150"
+              oninput="App.config.maxY=+this.value;App.save()">
+            <span class="pt-v">mm</span>
+          </div>
+          <button class="cb pdn" style="margin:10px auto;width:calc(100% - 28px);font-size:11px;"
+            onclick="App.fixServoConfig()">🔧 Fix Servo Config ($32=0)</button>
+          <div class="pt-row"><span class="pt-k">DWELL_UP</span> <span class="pt-v" id="ptDwellUp">250 ms</span></div>
+          <div class="pt-row"><span class="pt-k">DWELL_DN</span> <span class="pt-v" id="ptDwellDn">250 ms</span></div>
+          <div class="pt-row"><span class="pt-k">DRIVER</span> <span class="pt-v">A4988 · 1/16 step</span></div>
+          <div class="pt-row"><span class="pt-k">MOTOR_X_Y</span> <span class="pt-v">NEMA 17</span></div>
+          <div class="pt-row"><span class="pt-k">MOTION</span> <span class="pt-v">H-Bot / CoreXY</span></div>
+          <div class="pt-row">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="invertYCheck" onchange="App.config.invertY=this.checked;App.save()">
+              <span class="pt-k" style="width:auto;">INVERT Y-AXIS</span>
+            </label>
+            <span class="pt-v" style="font-size:10px;">Flip for CoreXY</span>
+          </div>
+          <div class="pt-row"><span class="pt-k">VOICE_LANG</span> <span class="pt-v">en-IN</span></div>
+          <div class="pt-row"><span class="pt-k">CHARS_WRITTEN</span><span class="pt-v" id="ptChars">0</span></div>
+          <div class="pt-row"><span class="pt-k">LINES_SENT</span> <span class="pt-v" id="ptLines">5</span></div>
+          <div class="pt-row"><span class="pt-k">SERVO_HOLD</span> <span class="pt-v" id="ptHold">OFF</span></div>
+          <div class="pt-row" style="color:var(--amber);"><span class="pt-k">TELEMETRY</span> <span class="pt-v"
+              id="ptTel">X:0.00 Y:0.00</span></div>
+        </div>
+      </div>
+
+    </div><!-- .right -->
+
+  </div><!-- .layout -->
+
+  <div class="toast" id="toast"></div>
+  <script src="shared.js"></script>
+  <script src="hershey.js"></script>
+  <script src="control.js"></script>
+</body>
+
+</html>
