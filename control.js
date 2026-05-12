@@ -128,7 +128,8 @@ async function doConnect() {
   }
 
   if (!('serial' in navigator)) {
-    setBadge('err', '❌ Chrome ya Edge browser use karo (Web Serial required)');
+    console.error('Web Serial API not supported or blocked by policy.');
+    setBadge('err', '❌ Browser API Blocked (Use Chrome/Edge on HTTPS)');
     notify('❌ Browser fallback: Serial API not found');
     enterDemoMode();
     return;
@@ -155,9 +156,14 @@ async function doConnect() {
 
     startReader();
 
-    // WAKE UP GRBL (Classic logic from reference)
-    await delay(400);
+    // WAKE UP GRBL (Enhanced Sequence for GitHub Pages/HTTPS)
+    sysLog('Waking up machine...', 'wait');
+    await delay(500);
     await rawWrite('\r\n');
+    await delay(200);
+    await rawWrite('$X\n'); // Kill alarm if present
+    await delay(200);
+    await rawWrite('$$\n'); // Fetch settings to confirm connection
     await rawWrite('\r\n');
 
     // INIT SEQUENCE (Classic logic from reference)
